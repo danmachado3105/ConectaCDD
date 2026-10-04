@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ConectaCDD – Saneamento na Cidade de Deus</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>Plataforma de relatos de saneamento · Cidade de Deus, Rio de Janeiro</span>
+      <span class="topbar-ods">ODS 11 · Cidades e Comunidades Sustentáveis</span>
+    </div>
+  </div>
+
+  <header class="header">
+    <nav class="container nav">
+      <a href="index.html" class="logo">Conecta<span>CDD</span></a>
+
+      <ul class="nav-links">
+        <li><a href="index.html" class="active">Início</a></li>
+        <li><a href="relatar.html">Relatar problema</a></li>
+        <li><a href="acompanhar.html">Acompanhar protocolo</a></li>
+        <li><a href="#faq">Dúvidas</a></li>
+        <li><a href="painel.html" class="btn btn-sm">Painel de Gestão</a></li>
+      </ul>
+
+      <button id="menu-btn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </nav>
+
+    <ul id="menu-mobile" class="nav-mobile hidden">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="relatar.html">Relatar problema</a></li>
+      <li><a href="acompanhar.html">Acompanhar protocolo</a></li>
+      <li><a href="#faq">Dúvidas</a></li>
+      <li><a href="painel.html">Painel de Gestão</a></li>
+    </ul>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <span class="hero-badge">Canal oficial de relatos · Cidade de Deus</span>
+          <h1>Problema de saneamento no seu bairro? Registre e acompanhe até a solução.</h1>
+          <p>Canal direto entre moradores, Iguá Rio e Prefeitura/Rio-Águas para esgoto, vazamentos, alagamentos e entulho.</p>
+          <div class="hero-actions">
+            <a href="relatar.html" class="btn btn-light">Relatar um problema</a>
+            <a href="painel.html" class="btn btn-outline">Acesso da gestão</a>
+          </div>
+        </div>
+
+        <form class="consulta" id="form-consulta" novalidate>
+          <h2>Consultar protocolo</h2>
+          <p class="consulta-sub">Digite o número recebido ao registrar o relato.</p>
+          <label for="protocolo">Número do protocolo</label>
+          <input type="text" id="protocolo" name="protocolo" placeholder="Ex.: CDD-2026-0412" autocomplete="off">
+          <button type="submit" class="btn btn-block">Consultar</button>
+          <p class="consulta-dica">Protocolo de teste: <button type="button" class="link-btn" id="usar-teste">CDD-2026-0412</button></p>
+        </form>
+      </div>
+    </section>
+
+    <!-- ESTATÍSTICAS -->
+    <section class="stats">
+      <div class="container stats-grid">
+        <div class="stat">
+          <strong data-alvo="47">0</strong>
+          <span>Chamados ativos</span>
+        </div>
+        <div class="stat stat-ok">
+          <strong data-alvo="128">0</strong>
+          <span>Resolvidos em 30 dias</span>
+        </div>
+        <div class="stat stat-warn">
+          <strong data-alvo="2.4" data-decimais="1" data-sufixo=" dias">0</strong>
+          <span>Tempo médio de resposta</span>
+        </div>
+        <div class="stat stat-danger">
+          <strong data-alvo="6">0</strong>
+          <span>Casos urgentes</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TIPOS DE RELATO -->
+    <section class="container block">
+      <h2 class="block-title">O que você pode relatar</h2>
+      <div class="tipos">
+        <a href="relatar.html?tipo=esgoto" class="tipo tipo-esgoto">
+          <strong>Esgoto a céu aberto</strong>
+          <span>Transbordamento, mau cheiro, rede entupida</span>
+        </a>
+        <a href="relatar.html?tipo=vazamento" class="tipo tipo-vazamento">
+          <strong>Vazamento de água</strong>
+          <span>Tubulação rompida, desperdício na via</span>
+        </a>
+        <a href="relatar.html?tipo=alagamento" class="tipo tipo-alagamento">
+          <strong>Alagamento</strong>
+          <span>Bueiro entupido, acúmulo após chuva</span>
+        </a>
+        <a href="relatar.html?tipo=entulho" class="tipo tipo-entulho">
+          <strong>Entulho e lixo</strong>
+          <span>Descarte irregular em vias e valas</span>
+        </a>
+      </div>
+    </section>
+
+    <!-- ÚLTIMAS OCORRÊNCIAS + COMO FUNCIONA -->
+    <section class="container content">
+      <div class="panel panel-tabela">
+        <div class="panel-head">
+          <h2>Últimas ocorrências</h2>
+          <span class="resultado" id="contador-resultados" aria-live="polite">8 de 8</span>
+        </div>
+
+        <div class="filtros">
+          <div class="busca">
+            <input type="search" id="busca" placeholder="Buscar por protocolo, tipo, rua ou descrição" aria-label="Buscar ocorrências">
+          </div>
+          <div class="chips" role="group" aria-label="Filtrar por status">
+            <button type="button" class="chip is-active" data-status="todos" aria-pressed="true">Todos</button>
+            <button type="button" class="chip" data-status="analise" aria-pressed="false">Em análise</button>
+            <button type="button" class="chip" data-status="andamento" aria-pressed="false">Em andamento</button>
+            <button type="button" class="chip" data-status="resolvido" aria-pressed="false">Resolvido</button>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table id="tabela-ocorrencias">
+            <thead>
+              <tr>
+                <th>Protocolo</th><th>Tipo</th><th>Descrição</th><th>Local</th><th>Gravidade</th><th>Status</th><th>Registro</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr data-status="analise">
+                <td>CDD-2026-0412</td><td>Esgoto</td>
+                <td>Esgoto transbordando na altura da Praça Seca, com mau cheiro e risco para pedestres</td>
+                <td>Rua Edgar Werneck</td>
+                <td><span class="pill pill-alta">Alta</span></td>
+                <td><span class="pill pill-analise pill-status">Em análise</span></td>
+                <td>04/10</td>
+              </tr>
+              <tr data-status="andamento">
+                <td>CDD-2026-0411</td><td>Alagamento</td>
+                <td>Bueiro entupido gerando acúmulo de água após a chuva</td>
+                <td>Caminho do Itanhangá</td>
+                <td><span class="pill pill-alta">Alta</span></td>
+                <td><span class="pill pill-andamento pill-status">Em andamento</span></td>
+                <td>03/10</td>
+              </tr>
+              <tr data-status="analise">
+                <td>CDD-2026-0410</td><td>Vazamento</td>
+                <td>Vazamento na tubulação principal, água correndo pela via há dias</td>
+                <td>Rua Cuiabá</td>
+                <td><span class="pill pill-media">Média</span></td>
+                <td><span class="pill pill-analise pill-status">Em análise</span></td>
+                <td>03/10</td>
+              </tr>
+              <tr data-status="andamento">
+                <td>CDD-2026-0409</td><td>Entulho</td>
+                <td>Entulho de obra bloqueando a vala de drenagem</td>
+                <td>Gabinal</td>
+                <td><span class="pill pill-media">Média</span></td>
+                <td><span class="pill pill-andamento pill-status">Em andamento</span></td>
+                <td>02/10</td>
+              </tr>
+              <tr data-status="analise">
+                <td>CDD-2026-0408</td><td>Esgoto</td>
+                <td>Caixa de inspeção sem tampa e esgoto aflorando na calçada</td>
+                <td>Karatê</td>
+                <td><span class="pill pill-alta">Alta</span></td>
+                <td><span class="pill pill-analise pill-status">Em análise</span></td>
+                <td>01/10</td>
+              </tr>
+              <tr data-status="resolvido">
+                <td>CDD-2026-0407</td><td>Alagamento</td>
+                <td>Galeria de águas pluviais assoreada, desobstruída pela equipe</td>
+                <td>Apês</td>
+                <td><span class="pill pill-baixa">Baixa</span></td>
+                <td><span class="pill pill-resolvido pill-status">Resolvido</span></td>
+                <td>30/09</td>
+              </tr>
+              <tr data-status="resolvido">
+                <td>CDD-2026-0406</td><td>Vazamento</td>
+                <td>Cavalete com vazamento em frente a residência, reparo concluído</td>
+                <td>Rua Edgar Werneck</td>
+                <td><span class="pill pill-baixa">Baixa</span></td>
+                <td><span class="pill pill-resolvido pill-status">Resolvido</span></td>
+                <td>29/09</td>
+              </tr>
+              <tr data-status="resolvido">
+                <td>CDD-2026-0405</td><td>Entulho</td>
+                <td>Lixo acumulado em vala, atraindo vetores; recolhimento realizado</td>
+                <td>Rua Cuiabá</td>
+                <td><span class="pill pill-media">Média</span></td>
+                <td><span class="pill pill-resolvido pill-status">Resolvido</span></td>
+                <td>27/09</td>
+              </tr>
+              <tr id="linha-vazia" class="hidden">
+                <td colspan="7" class="vazio">Nenhuma ocorrência encontrada para os filtros aplicados.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="note">* Dados simulados para fins de protótipo acadêmico.</p>
+      </div>
+
+      <aside class="panel">
+        <div class="panel-head"><h2>Como funciona</h2></div>
+        <ol class="steps">
+          <li>
+            <span class="step-num">1</span>
+            <div><h3>Relate</h3><p>Tipo, descrição, foto e localização.</p></div>
+          </li>
+          <li>
+            <span class="step-num">2</span>
+            <div><h3>Receba o protocolo</h3><p>Número único para consulta.</p></div>
+          </li>
+          <li>
+            <span class="step-num">3</span>
+            <div><h3>Acompanhe</h3><p>Status atualizado pela gestão.</p></div>
+          </li>
+        </ol>
+      </aside>
+    </section>
+
+    <!-- ÁREAS ATENDIDAS -->
+    <section class="container block" id="areas">
+      <div class="block-head">
+        <h2 class="block-title">Áreas atendidas na Cidade de Deus</h2>
+        <span class="block-sub">Localidades monitoradas · foco em saneamento</span>
+      </div>
+      <div class="areas">
+        <article class="area">
+          <h3>Karatê</h3>
+          <p>Esgoto e drenagem</p>
+          <span class="area-count">11 chamados ativos</span>
+        </article>
+        <article class="area">
+          <h3>Apês</h3>
+          <p>Vazamentos e esgoto</p>
+          <span class="area-count">9 chamados ativos</span>
+        </article>
+        <article class="area">
+          <h3>Gabinal</h3>
+          <p>Drenagem e entulho</p>
+          <span class="area-count">8 chamados ativos</span>
+        </article>
+        <article class="area">
+          <h3>Rua Edgar Werneck</h3>
+          <p>Esgoto e vazamentos</p>
+          <span class="area-count">7 chamados ativos</span>
+        </article>
+        <article class="area">
+          <h3>Caminho do Itanhangá</h3>
+          <p>Alagamento e bueiros</p>
+          <span class="area-count">6 chamados ativos</span>
+        </article>
+        <article class="area">
+          <h3>Rua Cuiabá</h3>
+          <p>Vazamentos e valas</p>
+          <span class="area-count">6 chamados ativos</span>
+        </article>
+      </div>
+      <p class="note">* Localidades e números ilustrativos, simulados para o protótipo.</p>
+    </section>
+
+    <!-- PARCEIROS E TRANSPARÊNCIA -->
+    <section class="container block" id="parceiros">
+      <div class="block-head">
+        <h2 class="block-title">Parceiros e transparência</h2>
+        <span class="block-sub">Alinhado ao ODS 11 · Cidades e Comunidades Sustentáveis</span>
+      </div>
+
+      <div class="parceiros">
+        <article class="parceiro">
+          <div class="parceiro-logo logo-igua">
+            <img src="images/igua-rio.png" alt="Logotipo da Iguá Rio" loading="lazy">
+          </div>
+          <h3>Iguá Rio</h3>
+          <p>Concessionária de água e esgoto. Recebe e trata os chamados de vazamento, rede entupida e esgoto.</p>
+        </article>
+
+        <article class="parceiro">
+          <div class="parceiro-logo logo-rio-aguas">
+            <img src="images/rio-aguas.png" alt="Logotipo da Fundação Rio-Águas" loading="lazy">
+          </div>
+          <h3>Fundação Rio-Águas</h3>
+          <p>Responsável pela drenagem urbana. Atua em bueiros, galerias, valas e pontos de alagamento.</p>
+        </article>
+
+        <article class="parceiro">
+          <div class="parceiro-logo logo-prefeitura">
+            <img src="images/prefeitura-rio.png" alt="Logotipo da Prefeitura do Rio" loading="lazy">
+          </div>
+          <h3>Prefeitura do Rio</h3>
+          <p>Coordena limpeza urbana e a articulação entre os órgãos para resolver cada ocorrência.</p>
+        </article>
+      </div>
+
+      <div class="transparencia">
+        <div class="indicador">
+          <strong>73%</strong>
+          <span>Taxa de resolução</span>
+        </div>
+        <div class="indicador">
+          <strong>2,4 dias</strong>
+          <span>Tempo médio de resposta</span>
+        </div>
+        <div class="indicador">
+          <strong>100%</strong>
+          <span>Chamados com protocolo</span>
+        </div>
+        <div class="indicador">
+          <strong>Público</strong>
+          <span>Status consultável por todos</span>
+        </div>
+      </div>
+      <p class="note">* Prototipação acadêmica: indicadores simulados; as parcerias representam os atores previstos no projeto.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="container block block-last" id="faq">
+      <h2 class="block-title">Perguntas frequentes</h2>
+      <div class="faq">
+        <details>
+          <summary>Como faço para relatar um problema?</summary>
+          <p>Acesse "Relatar problema", escolha o tipo, descreva a situação, anexe uma foto e indique o local. Ao final, você recebe um número de protocolo.</p>
+        </details>
+        <details>
+          <summary>Preciso criar conta ou me identificar?</summary>
+          <p>Não. O relato é aberto e o acompanhamento é feito apenas pelo número do protocolo.</p>
+        </details>
+        <details>
+          <summary>Como acompanho o andamento?</summary>
+          <p>Digite o protocolo em "Consultar protocolo". A linha do tempo mostra cada etapa: recebido, em análise, em andamento e resolvido.</p>
+        </details>
+        <details>
+          <summary>Quem recebe e resolve o meu relato?</summary>
+          <p>Os relatos chegam ao painel de gestão, onde Iguá Rio e Prefeitura/Rio-Águas priorizam por gravidade e atualizam o status.</p>
+        </details>
+        <details>
+          <summary>O que fazer em caso de emergência?</summary>
+          <p>Para risco imediato (rede rompida com perigo, alagamento com pessoas em risco), ligue para a Defesa Civil (199) ou o Corpo de Bombeiros (193). A plataforma não substitui o atendimento de emergência.</p>
+        </details>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>ConectaCDD · Protótipo acadêmico</span>
+      <span>UVA – Engenharia: Da Ideia à Concepção</span>
+    </div>
+  </footer>
+
+  <!-- Área das notificações (toasts) -->
+  <div class="toast-area" id="toast-area" aria-live="polite" aria-atomic="false"></div>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
