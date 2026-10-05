@@ -17,9 +17,9 @@
 
 ---
 
-## Acesse o Protótipo Online
+## Protótipo Online
 O protótipo funcional desenvolvido está publicado e acessível no ar através do link:
-👉 **[https://conectacdd.vercel.app](https://conectacdd.vercel.app)**
+ **[https://conectacdd.vercel.app](https://conectacdd.vercel.app)**
 
 ---
 

@@ -12,6 +12,16 @@
     });
   }
 
+  const header = document.querySelector('.header');
+  if (header) {
+    const atualizarTransparenciaHeader = () => {
+      header.classList.toggle('is-scrolled', window.scrollY > 12);
+    };
+
+    atualizarTransparenciaHeader();
+    window.addEventListener('scroll', atualizarTransparenciaHeader, { passive: true });
+  }
+
   /* ===== CONTADORES ANIMADOS ===== */
   // data-alvo: valor final | data-decimais: casas decimais | data-sufixo: texto após o número
   const reduzirMovimento = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
