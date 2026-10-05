@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Gestão – ConectaCDD</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/gestao.css">
+</head>
+<body>
+
+  <!-- Faixa institucional da área restrita -->
+  <div class="gs-banner">
+    <div class="container gs-banner-inner">
+      <span class="gs-lock">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
+        <strong>Área Restrita</strong> · Iguá Rio &amp; Fundação Rio-Águas
+      </span>
+      <span class="gs-sim">Ambiente de simulação · sem autenticação real</span>
+    </div>
+  </div>
+
+  <header class="header">
+    <nav class="container nav">
+      <a href="index.html" class="logo">Conecta<span>CDD</span></a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="relatar.html">Relatar problema</a></li>
+        <li><a href="acompanhar.html">Acompanhar protocolo</a></li>
+        <li><a href="gestao.html" class="btn btn-sm">Painel de Gestão</a></li>
+      </ul>
+
+      <button id="menu-btn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </nav>
+
+    <ul id="menu-mobile" class="nav-mobile hidden">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="relatar.html">Relatar problema</a></li>
+      <li><a href="acompanhar.html">Acompanhar protocolo</a></li>
+      <li><a href="gestao.html">Painel de Gestão</a></li>
+    </ul>
+  </header>
+
+  <main class="container gs-main">
+
+    <!-- Título -->
+    <section class="gs-titulo">
+      <div>
+        <h1>Painel de Gestão de Ocorrências</h1>
+        <p>Priorize os chamados por gravidade e atualize o andamento. As alterações aparecem na tela de acompanhamento do morador.</p>
+      </div>
+      <div class="gs-titulo-acoes">
+        <span class="gs-atualizado">Atualizado às <strong id="gs-atualizado">--:--</strong></span>
+        <button type="button" class="btn btn-ghost btn-sm" id="btn-restaurar">Restaurar dados de exemplo</button>
+      </div>
+    </section>
+
+    <!-- Indicadores -->
+    <section class="gs-kpis" aria-label="Indicadores rápidos">
+      <article class="gs-kpi gs-kpi--azul">
+        <span class="gs-kpi-rotulo">Total de chamados</span>
+        <strong class="gs-kpi-valor" id="kpi-total">0</strong>
+        <span class="gs-kpi-nota">Todos os registros</span>
+      </article>
+      <article class="gs-kpi gs-kpi--cinza">
+        <span class="gs-kpi-rotulo">Pendentes</span>
+        <strong class="gs-kpi-valor" id="kpi-pendentes">0</strong>
+        <span class="gs-kpi-nota">Registrados ou em análise</span>
+      </article>
+      <article class="gs-kpi gs-kpi--laranja">
+        <span class="gs-kpi-rotulo">Em andamento</span>
+        <strong class="gs-kpi-valor" id="kpi-andamento">0</strong>
+        <span class="gs-kpi-nota">Equipe em campo</span>
+      </article>
+      <article class="gs-kpi gs-kpi--verde">
+        <span class="gs-kpi-rotulo">Resolvidos</span>
+        <strong class="gs-kpi-valor" id="kpi-resolvidos">0</strong>
+        <span class="gs-kpi-nota">Chamados encerrados</span>
+      </article>
+      <article class="gs-kpi gs-kpi--vermelho">
+        <span class="gs-kpi-rotulo">Taxa de urgência</span>
+        <strong class="gs-kpi-valor" id="kpi-urgencia">0%</strong>
+        <span class="gs-kpi-nota" id="nota-urgencia">Gravidade alta entre os abertos</span>
+      </article>
+    </section>
+
+    <!-- Tabela de ocorrências -->
+    <section class="gs-painel" aria-label="Ocorrências">
+      <div class="gs-filtros">
+        <div class="busca gs-busca">
+          <label class="sr-only" for="busca">Buscar ocorrências</label>
+          <input type="search" id="busca" placeholder="Buscar por protocolo, tipo, local ou descrição">
+        </div>
+
+        <div class="chips" id="chips-gravidade" role="group" aria-label="Filtrar por gravidade">
+          <button type="button" class="chip is-active" data-gravidade="todas" aria-pressed="true">Todas <span class="gs-chip-n" id="n-todas">0</span></button>
+          <button type="button" class="chip" data-gravidade="alta" aria-pressed="false">Alta <span class="gs-chip-n" id="n-alta">0</span></button>
+          <button type="button" class="chip" data-gravidade="media" aria-pressed="false">Média <span class="gs-chip-n" id="n-media">0</span></button>
+          <button type="button" class="chip" data-gravidade="baixa" aria-pressed="false">Baixa <span class="gs-chip-n" id="n-baixa">0</span></button>
+        </div>
+
+        <div class="gs-selects">
+          <label class="gs-select-wrap">
+            <span>Status</span>
+            <select id="filtro-status" class="gs-select">
+              <option value="todos">Todos</option>
+              <option value="recebido">Registrado</option>
+              <option value="analise">Em análise</option>
+              <option value="campo">Equipe em campo</option>
+              <option value="resolvido">Resolvido</option>
+            </select>
+          </label>
+          <label class="gs-select-wrap">
+            <span>Ordenar por</span>
+            <select id="ordem" class="gs-select">
+              <option value="prioridade">Prioridade (gravidade)</option>
+              <option value="recentes">Mais recentes</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div class="gs-tabela-wrap">
+        <table class="gs-tabela">
+          <thead>
+            <tr>
+              <th>Protocolo</th>
+              <th>Tipo</th>
+              <th>Local na CDD</th>
+              <th>Gravidade</th>
+              <th>Status</th>
+              <th>Registro</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tabela-corpo"></tbody>
+        </table>
+      </div>
+
+      <div class="gs-rodape-painel">
+        <span id="gs-contagem" aria-live="polite">Exibindo 0 de 0 chamados</span>
+        <span class="gs-nota">* Dados simulados, salvos apenas neste navegador.</span>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>ConectaCDD · Protótipo acadêmico</span>
+      <span>UVA – Engenharia: Da Ideia à Concepção</span>
+    </div>
+  </footer>
+
+  <div class="toast-area" id="toast-area" aria-live="polite"></div>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/gestao.js" defer></script>
+</body>
+</html>

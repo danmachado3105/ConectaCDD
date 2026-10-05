@@ -269,7 +269,7 @@ button {
     color: #fff;
     background:
         linear-gradient(105deg, rgba(5, 25, 42, .93) 0%, rgba(7, 31, 53, .8) 55%, rgba(7, 31, 53, .66) 100%),
-        url("images/hero-cdd.jpg") center / cover no-repeat,
+        url("../images/hero-cdd.jpg") center / cover no-repeat,
         var(--blue-900);
 }
 

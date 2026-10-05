@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acompanhar protocolo – ConectaCDD</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <link rel="shortcut icon" href="images/favicon.png" type="image/x-icon">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/acompanhar.css">
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span>Plataforma de relatos de saneamento · Cidade de Deus, Rio de Janeiro</span>
+      <span class="topbar-ods">ODS 11 · Cidades e Comunidades Sustentáveis</span>
+    </div>
+  </div>
+
+  <header class="header">
+    <nav class="container nav">
+      <a href="index.html" class="logo">Conecta<span>CDD</span></a>
+
+      <ul class="nav-links">
+        <li><a href="index.html">Início</a></li>
+        <li><a href="relatar.html">Relatar problema</a></li>
+        <li><a href="acompanhar.html" class="active">Acompanhar protocolo</a></li>
+        <li><a href="index.html#faq">Dúvidas</a></li>
+        <li><a href="gestao.html" class="btn btn-sm">Painel de Gestão</a></li>
+      </ul>
+
+      <button id="menu-btn" class="menu-btn" aria-label="Abrir menu" aria-expanded="false">☰</button>
+    </nav>
+
+    <ul id="menu-mobile" class="nav-mobile hidden">
+      <li><a href="index.html">Início</a></li>
+      <li><a href="relatar.html">Relatar problema</a></li>
+      <li><a href="acompanhar.html">Acompanhar protocolo</a></li>
+      <li><a href="index.html#faq">Dúvidas</a></li>
+      <li><a href="gestao.html">Painel de Gestão</a></li>
+    </ul>
+  </header>
+
+  <main>
+    <!-- BUSCA -->
+    <section class="ac-hero">
+      <div class="container ac-hero-inner">
+        <p class="ac-crumbs"><a href="index.html">Início</a> · Acompanhar protocolo</p>
+        <h1>Acompanhar ocorrência</h1>
+        <p class="ac-hero-sub">Digite o número do protocolo recebido ao registrar o relato e veja em que etapa ele está.</p>
+
+        <form class="ac-busca" id="form-busca" novalidate>
+          <label class="sr-only" for="protocolo">Número do protocolo</label>
+          <div class="ac-busca-linha">
+            <input type="text" id="protocolo" name="protocolo" placeholder="Ex.: CDD-2026-0412" maxlength="16" autocomplete="off" autocapitalize="characters" spellcheck="false">
+            <button type="submit" class="btn btn-light" id="btn-consultar">Consultar Status</button>
+          </div>
+          <p class="ac-erro" id="erro-busca" role="alert"></p>
+
+          <div class="ac-exemplos">
+            <span>Exemplos:</span>
+            <button type="button" class="ac-exemplo" data-protocolo="CDD-2026-0412">CDD-2026-0412</button>
+            <button type="button" class="ac-exemplo" data-protocolo="CDD-2026-0411">CDD-2026-0411</button>
+            <button type="button" class="ac-exemplo" data-protocolo="CDD-2026-0407">CDD-2026-0407</button>
+          </div>
+        </form>
+      </div>
+    </section>
+
+    <!-- RESULTADO -->
+    <section class="container ac-area" aria-live="polite">
+
+      <!-- Estado inicial -->
+      <div class="ac-vazio" id="estado-vazio">
+        <div class="ac-vazio-icone">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+        </div>
+        <h2>Nenhuma consulta realizada</h2>
+        <p>Informe um protocolo acima para ver os detalhes e o andamento do chamado.</p>
+      </div>
+
+      <!-- Não encontrado -->
+      <div class="ac-vazio hidden" id="estado-nao-encontrado">
+        <div class="ac-vazio-icone ac-vazio-icone--erro">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5"/><path d="M12 16.5h.01"/></svg>
+        </div>
+        <h2>Protocolo não encontrado</h2>
+        <p>Não localizamos <strong id="nao-encontrado-protocolo"></strong>. Confira o número e tente novamente.</p>
+        <a href="relatar.html" class="btn btn-ghost">Registrar um novo relato</a>
+      </div>
+
+      <!-- Detalhes + Timeline -->
+      <div class="ac-resultado hidden" id="resultado">
+
+        <article class="ac-card">
+          <div class="ac-topo">
+            <div class="ac-protocolo">
+              <small>Protocolo</small>
+              <strong id="res-protocolo" tabindex="-1">CDD-0000-0000</strong>
+            </div>
+            <span class="pill" id="res-status">Status</span>
+          </div>
+          <p class="ac-msg" id="res-mensagem"></p>
+        </article>
+
+        <article class="ac-card">
+          <h2 class="ac-titulo">Andamento do chamado</h2>
+          <ol class="timeline" id="timeline">
+            <li class="tl-item" data-etapa="recebido">
+              <span class="tl-marcador">1</span>
+              <div class="tl-corpo">
+                <h3 class="tl-titulo">Registrado</h3>
+                <p class="tl-desc">Relato recebido e protocolo gerado.</p>
+                <p class="tl-data"></p>
+              </div>
+            </li>
+            <li class="tl-item" data-etapa="analise">
+              <span class="tl-marcador">2</span>
+              <div class="tl-corpo">
+                <h3 class="tl-titulo">Em análise</h3>
+                <p class="tl-desc">Iguá Rio e Rio-Águas avaliam e priorizam o chamado.</p>
+                <p class="tl-data"></p>
+              </div>
+            </li>
+            <li class="tl-item" data-etapa="campo">
+              <span class="tl-marcador">3</span>
+              <div class="tl-corpo">
+                <h3 class="tl-titulo">Equipe em campo</h3>
+                <p class="tl-desc">Equipe enviada ao local para o reparo.</p>
+                <p class="tl-data"></p>
+              </div>
+            </li>
+            <li class="tl-item" data-etapa="resolvido">
+              <span class="tl-marcador">4</span>
+              <div class="tl-corpo">
+                <h3 class="tl-titulo">Resolvido</h3>
+                <p class="tl-desc">Problema solucionado e chamado encerrado.</p>
+                <p class="tl-data"></p>
+              </div>
+            </li>
+          </ol>
+        </article>
+
+        <article class="ac-card">
+          <h2 class="ac-titulo">Detalhes da ocorrência</h2>
+          <dl class="ac-grid">
+            <div><dt>Tipo</dt><dd id="res-tipo"></dd></div>
+            <div><dt>Órgão responsável</dt><dd id="res-orgao"></dd></div>
+            <div><dt>Localidade</dt><dd id="res-localidade"></dd></div>
+            <div><dt>Referência</dt><dd id="res-referencia"></dd></div>
+            <div><dt>Prioridade</dt><dd><span class="pill" id="res-gravidade"></span></dd></div>
+            <div><dt>Registrado em</dt><dd id="res-registro"></dd></div>
+            <div><dt>Última atualização</dt><dd id="res-atualizacao"></dd></div>
+            <div class="ac-grid-full"><dt>Descrição</dt><dd id="res-descricao"></dd></div>
+            <div class="ac-grid-full hidden" id="res-foto-wrap">
+              <dt>Foto anexada</dt>
+              <dd class="ac-foto"><img id="res-foto" alt="Foto anexada ao relato"></dd>
+            </div>
+          </dl>
+
+          <div class="ac-acoes">
+            <button type="button" class="btn btn-ghost" id="btn-nova-consulta">Nova consulta</button>
+            <a href="relatar.html" class="btn">Relatar outro problema</a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>ConectaCDD · Protótipo acadêmico</span>
+      <span>UVA – Engenharia: Da Ideia à Concepção</span>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/acompanhar.js" defer></script>
+</body>
+</html>
